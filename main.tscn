@@ -1,0 +1,52 @@
+[gd_scene load_steps=7 format=3 uid="uid://eqoq8tyq8sr4"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_ek8by"]
+[ext_resource type="PackedScene" uid="uid://8a1gli8h8fc" path="res://player.tscn" id="1_pjr2u"]
+[ext_resource type="Script" path="res://player.gd" id="2_43pfa"]
+[ext_resource type="PackedScene" uid="uid://dw4qgf8yqdm7p" path="res://Enemy.tscn" id="2_bd0yl"]
+[ext_resource type="PackedScene" uid="uid://d20tl2qqm5t5s" path="res://hud.tscn" id="3_ufpr3"]
+
+[sub_resource type="Curve2D" id="Curve2D_6ifcc"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 1, 5, 0, 0, 0, 0, -1, 725, 0, 0, 0, 0, 481, 721, 0, 0, 0, 0, 481, 3, 0, 0, 0, 0, 1, 5)
+}
+point_count = 5
+
+[node name="Main" type="Node"]
+script = ExtResource("1_ek8by")
+enemy_scene = ExtResource("2_bd0yl")
+
+[node name="BG" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0588235, 0.109804, 0.164706, 1)
+
+[node name="Player" parent="." instance=ExtResource("1_pjr2u")]
+script = ExtResource("2_43pfa")
+
+[node name="HUD" parent="." instance=ExtResource("3_ufpr3")]
+
+[node name="StartPosition" type="Marker2D" parent="."]
+position = Vector2(240, 450)
+
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource("Curve2D_6ifcc")
+
+[node name="SpawnEnemy" type="PathFollow2D" parent="Path2D"]
+
+[node name="StartTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="ScoreTimer" type="Timer" parent="."]
+
+[node name="EnemyTimer" type="Timer" parent="."]
+wait_time = 0.5
+
+[connection signal="start_game" from="HUD" to="." method="new_game"]
+[connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]
+[connection signal="timeout" from="ScoreTimer" to="." method="_on_score_timer_timeout"]
+[connection signal="timeout" from="EnemyTimer" to="." method="_on_enemy_timer_timeout"]
