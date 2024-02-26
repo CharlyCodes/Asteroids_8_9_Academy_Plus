@@ -9,7 +9,8 @@ func new_game():
 	$Player.start($StartPosition.position)
 	$StartTimer.start()
 	$HUD.show_message("Prepare!")
-	
+	#ESTE ES UN MENSAJE
+	#ESTE ES OTRO MENSAJE
 	
 	pass
 
